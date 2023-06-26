@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Profile {
+  manager
+  judge
+  coordinator
+  representative
+  teacher
+  admin
+}
+
+model Unity {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  groups     Group[]
+  places     Place[]
+  users      User[]
+  modalities Modality[]
+  setups     Setup[]
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String
+  name     String
+  unityId  Int?
+  profile  Profile?
+
+  games Game[]
+  unity Unity? @relation(fields: [unityId], references: [id])
+}
+
+model Group {
+  id      Int    @id @default(autoincrement())
+  name    String @unique
+  unityId Int?
+
+  teams Team[]
+  unity Unity? @relation(fields: [unityId], references: [id])
+}
+
+enum Type {
+  collective
+  individual
+  participative
+  ranking
+}
+
+model Modality {
+  id              Int    @id @default(autoincrement())
+  name            String @unique
+  membersQuantity Int
+  teamsQuantity   Int
+  type            Type?
+  unityId         Int?
+
+  teams Team[]
+  games Game[]
+  Unity Unity? @relation(fields: [unityId], references: [id])
+}
+
+model Place {
+  id      Int    @id @default(autoincrement())
+  name    String @unique
+  unityId Int?
+
+  games Game[]
+  Unity Unity? @relation(fields: [unityId], references: [id])
+}
+
+model Genre {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  teams Team[]
+}
+
+model Team {
+  id         Int    @id @default(autoincrement())
+  name       String @unique
+  modalityId Int?
+  groupId    Int?
+  genreId    Int?
+  students   Json
+
+  genre    Genre?    @relation(fields: [genreId], references: [id])
+  group    Group?    @relation(fields: [groupId], references: [id])
+  modality Modality? @relation(fields: [modalityId], references: [id])
+
+  @@index([genreId], map: "Team_genreId_fkey")
+  @@index([groupId], map: "Team_groupId_fkey")
+  @@index([modalityId], map: "Team_modalityId_fkey")
+}
+
+model Game {
+  id         Int      @id @default(autoincrement())
+  date       DateTime
+  startHours String
+  endHours   String
+  comments   String?
+  teams      Json
+
+  placeId    Int?
+  modalityId Int?
+  userId     Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  place    Place?    @relation(fields: [placeId], references: [id])
+  modality Modality? @relation(fields: [modalityId], references: [id])
+  user     User?     @relation(fields: [userId], references: [id])
+}
+
+model Setup {
+  id           Int    @id @default(autoincrement())
+  documentLink String
+  unityId      Int?
+
+  Unity Unity? @relation(fields: [unityId], references: [id])
+}
