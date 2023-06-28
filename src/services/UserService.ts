@@ -1,7 +1,7 @@
-import { UserRepository } from "../repositories/UserRepository";
 import bcrypt from 'bcrypt'
+import { UserRepository } from '@/repositories/UserRepository'
 
-import {UserUpdateType, UserCreateType, userUpdateSchema, userCreateSchema, userFilterSchema,  } from '../utils/schemas'
+import {UserUpdateType, UserCreateType, userUpdateSchema, userCreateSchema, userFilterSchema,  } from '@/utils/schemas'
 export class UserService{
 
   static async findMany(data:any){

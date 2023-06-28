@@ -1,7 +1,6 @@
 import moment from "moment";
 import { describe, expect, it } from "vitest";
 import { GameService } from "../services/GameService";
-import { UserService } from "../services/UserService";
 
 describe('Game', () => {
   it('Game list', async () => {
@@ -16,9 +15,14 @@ describe('Game', () => {
     })
   })
 
-  it('Game crud', async () => {
+  it('Game show', async() => {
 
-    const users = await UserService.findMany({})
+    const gameShow = await GameService.findById(1)
+    expect(gameShow).toHaveProperty('startHours')
+
+  })
+
+  it('Game update', async() => {
 
     const data = {
       date: new Date().toISOString(),
@@ -26,34 +30,39 @@ describe('Game', () => {
       endHours: '08:00',
       placeId: 1,
       modalityId: 1,
-      userId: users[0].id,
-      teams: [53, 40]
+      userId: 1,
+      teams: [
+        {id: 1, goals: 1, fairPlay:0,  points: 3},
+        {id: 2, goals: 0, fairPlay:0,  points: 1},
+      ]
+      // teams: [53, 40]
     }
-    /**
-     * Create
-     */
+
+    const gameUpdate = await GameService.update(1, { ...data, startHours: moment().format('HH:MM') })
+    expect(gameUpdate).toHaveProperty('startHours', moment().format('HH:MM'))
+
+  })
+
+  it('Game create and delete',async() => {
+    const data = {
+      date: new Date().toISOString(),
+      startHours: '07:00',
+      endHours: '08:00',
+      placeId: 1,
+      modalityId: 1,
+      userId: 1,
+      teams: [
+        {id: 1, goals: 1, fairPlay:0,  points: 3},
+        {id: 2, goals: 0, fairPlay:0,  points: 1},
+      ]
+      // teams: [53, 40]
+    }
     const game = await GameService.create(data)
-    console.log(game)
     expect(game).toHaveProperty('startHours', data.startHours)
     expect(game).toHaveProperty('teams')
 
-    /**
-     * Show
-     */
-    const gameShow = await GameService.findById(game.id)
-    expect(gameShow).toHaveProperty('startHours')
-
-    /**
-     * Update
-     */
-    const gameUpdate = await GameService.update(game.id, { ...data, startHours: moment().format('HH:MM') })
-    expect(gameUpdate).toHaveProperty('startHours', moment().format('HH:MM'))
-    // expect(gameUpdate.teams).deep.equal(data.teams)
-
-    /**
-     * Delete
-     */
     await GameService.delete(game.id)
+
   })
 
 })

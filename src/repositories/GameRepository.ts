@@ -1,9 +1,9 @@
-import { Prisma } from "@prisma/client"
+import { prisma } from "@/libs/prisma"
 
 export class GameRepository {
 
   static async findMany() {
-    return await Prisma.game.findMany({
+    return await prisma.game.findMany({
       orderBy: [
         { date: 'asc' },
         { startHours: 'asc' }

@@ -1,13 +1,17 @@
 import { describe, expect, it } from 'vitest'
 import { UserService } from '@/services/UserService'
+import { users } from '../../prisma/seed/data'
 
 describe('User', () => {
 
-  it.only('User list', async () => {
+  it('User list', async () => {
 
     const users = await UserService.findMany({})
-    return console.log(users)
+    users.forEach(user => {
+      expect(user).not.toHaveProperty('password')
+      expect(user).toHaveProperty('unityId')
 
+    })
     expect(users.length).toBeGreaterThanOrEqual(0)
   })
 
@@ -18,19 +22,32 @@ describe('User', () => {
     })
   })
 
+  it('User update', async() => {
+    const data = {
+      email: 'admin@mail.com',
+      name: `admin ${new Date().getMinutes()}`,
+      password: 'qweqwe',
+      unityId: 2
+    }
 
-  it('User crud', async () => {
+    const userUpdate = await UserService.update(1, { ...data, name: 'update', profile:'admin' })
+    expect(userUpdate).toHaveProperty('name', 'update')
+  })
+
+  it('User create', async () => {
 
     const data = {
       email: 'test-delete@mail.com',
       name: `admin ${new Date().getMinutes()}`,
-      password: 'qweqwe'
+      password: 'qweqwe',
+      profile: 'admin',
+      unityId: 2
     }
 
     /**
      * Create
      */
-    const user = await UserService.create(data)
+    const user = await UserService.create({...data, profile:'admin'})
     expect(user).toHaveProperty('email', data.email)
 
 
@@ -39,12 +56,6 @@ describe('User', () => {
      */
     const userShow = await UserService.findById(user.id)
     expect(userShow).toHaveProperty('email', data.email)
-
-    /**
-    * Update
-    */
-    const userUpdate = await UserService.update(user.id, { ...data, name: 'update' })
-    expect(userUpdate).toHaveProperty('name', 'update')
 
     /**
      * Delete
