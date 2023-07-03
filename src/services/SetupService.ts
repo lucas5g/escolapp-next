@@ -1,5 +1,5 @@
-import { SetupRepository } from "../repositories/SetupRepository"
-import { setupSchema } from "../utils/schemas"
+import { SetupRepository } from "@/repositories/SetupRepository"
+import { setupSchema } from "@/utils/schemas"
 
 export class SetupServive{
 
