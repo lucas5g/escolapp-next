@@ -3,7 +3,9 @@ import jwtDecode from "jwt-decode";
 
 export function storageLogged(){
   return {
-    profile: 'admin'
+    profile: 'admin',
+    email: 'lucas@mail.com',
+    name: 'lucas de sousa'
   }
   // const accessToken = localStorage.getItem('accessToken') 
   // const logged:UserInterface = jwtDecode(accessToken ?? '')
