@@ -1,5 +1,23 @@
 import { z } from "zod";
 
+/**
+ * Places 
+ */
+
+export const CreatePlaceSchema = z.object({
+  name: z.string(),
+  unity_id: z.number()
+})
+
+export const UpdatePlaceSchema = CreatePlaceSchema.optional()
+
+export const FilterPlaceSchema = z.object({
+  unityId: z.coerce.number()
+}).optional()
+
+
+
+
 const profiles = [
   'coordinator', 
   'admin',
@@ -117,23 +135,8 @@ export const modalitySchema = z.object({
 
 export type ModalityInterface = z.infer<typeof modalitySchema >
 
-/**
- * Places 
- */
-
-export const placeSchema = z.object({
-  id: z.number().optional(),
-  name: z.string(),
-  unityId: z.number()
-})
-
-export const placeFilterSchema = z.object({
-  unityId: z.coerce.number()
-}).optional()
 
 
-export type PlaceType = z.infer<typeof placeSchema>
-export type PlaceFilterType = z.infer<typeof placeFilterSchema>
 
 
 export const unitySchema = z.object({
