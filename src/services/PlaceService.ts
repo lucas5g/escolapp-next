@@ -1,6 +1,6 @@
 import { prisma } from "@/libs/prisma"
-import { CreatePlaceSchema } from "@/utils/schemas"
-import { CreatePlaceType } from "@/utils/types"
+import { CreatePlaceSchema, UpdatePlaceSchema } from "@/utils/schemas"
+import { CreatePlaceType, UpdatePlaceType } from "@/utils/types"
 
 export class PlaceService {
 
@@ -15,14 +15,18 @@ export class PlaceService {
   }
 
    findOne(id: number) {
-    return await PlaceRepository.findById(id)
+    return prisma.place.findUniqueOrThrow({
+      where:{id}
+    })
   }
 
 
+  update(id: number, data: UpdatePlaceType) {
 
-  async update(id: number, data: any) {
-    const place = placeSchema.parse(data)
-    return await PlaceRepository.update(id, place)
+    return prisma.place.update({
+      where:{id},
+      data: UpdatePlaceSchema.parse(data)
+    })
   }
 
   delete(id: number) {

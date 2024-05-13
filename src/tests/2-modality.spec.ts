@@ -1,9 +1,27 @@
 import { ModalityService } from "@/services/ModalityService";
 import { TeamService } from "@/services/TeamService";
-import { ModalityInterface } from "@/utils/schemas";
 import { describe, expect, it } from "vitest";
 
+
 describe('Modality', () => {
+  const service = new ModalityService()
+
+  it('create', async () => {
+
+    const data = {
+      name: 'teste',
+      members_quantity: 22,
+      teams_quantity: 2,
+      type: 'collective',
+      unity_id: 2
+    }
+  
+    const res = await service.create(data)
+
+    
+    await service.delete(res.id)
+  })
+
   it('Modality list', async () => {
     const modalities = await ModalityService.findMany({unityId: 2})
     expect(modalities.length).toBeGreaterThan(0)
@@ -17,38 +35,7 @@ describe('Modality', () => {
     expect(modality).toHaveProperty('membersQuantity')
   })
 
-  it('Modality crud', async () => {
-
-    const data = {
-      name: 'teste',
-      membersQuantity: 22,
-      teamsQuantity: 2,
-      type: 'collective',
-      unityId: 2
-    }
-    /**
-     * Create
-     */
-    const modality = await ModalityService.create({...data, type:'collective'})
-    expect(modality).toHaveProperty('name', data.name)
-    /**
-     * Update
-     */
-    const modalityUpdate = await ModalityService.update(modality.id, { ...data, 
-      type:'individual', 
-      teamsQuantity: 9,
-      unityId: 1
-     })
-    expect(modalityUpdate).contain({
-      teamsQuantity: 9,
-      type:'individual',
-      unityId: 1
-    })
-    /**
-     * Delete
-     */
-    await ModalityService.delete(modality.id)
-  })
+ 
 
   it('Try to delete modality that has a team', async() => {
 

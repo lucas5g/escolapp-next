@@ -1,9 +1,6 @@
-import { GameRepository } from "../repositories/GameRepository"
-import { TeamRepository } from "../repositories/TeamRepository"
 import { TeamType, teamQuerySchema, teamSchema } from "../utils/schemas"
 import { Prisma } from "@prisma/client"
 import { StudentService } from "./StudentService"
-import { cache } from "@/libs/node-cache"
 
 export class TeamService {
   static async findMany(data?: teamQuerySchema) {

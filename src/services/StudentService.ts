@@ -1,4 +1,3 @@
-import { StudentRepository } from "../repositories/StudentRepository"
 import { StudentFilterType, studentFilterSchema } from "../utils/schemas"
 
 interface StudentInterface {

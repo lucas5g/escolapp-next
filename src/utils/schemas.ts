@@ -9,11 +9,17 @@ export const CreatePlaceSchema = z.object({
   unity_id: z.number()
 })
 
-export const UpdatePlaceSchema = CreatePlaceSchema.optional()
+export const UpdatePlaceSchema = CreatePlaceSchema.partial()
 
-export const FilterPlaceSchema = z.object({
-  unityId: z.coerce.number()
-}).optional()
+export const CreateModalitySchema = z.object({
+  name: z.string(),
+  members_quantity: z.coerce.number(),
+  teams_quantity: z.coerce.number(),
+  type: z.enum(['collective', 'individual', 'participative', 'ranking']),
+  unity_id: z.number()
+})
+
+export const UpdateModalitySchema = CreateModalitySchema.partial()
 
 
 
@@ -124,16 +130,6 @@ export const teamQuerySchema = z.object({
 
 export type TeamType = z.infer<typeof teamSchema>
 export type teamQuerySchema = z.infer<typeof teamQuerySchema>
-
-export const modalitySchema = z.object({
-  name: z.string(),
-  membersQuantity: z.coerce.number(),
-  teamsQuantity: z.coerce.number(),
-  type: z.enum(['collective', 'individual', 'participative', 'ranking']),
-  unityId: z.number()
-})
-
-export type ModalityInterface = z.infer<typeof modalitySchema >
 
 
 
