@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -20,16 +17,17 @@ model Unity {
   users      User[]
   teams      Team[]
   games      Game[]
+  setups     Setup[]
 
   @@map("unities")
 }
 
 model Place {
-  id       Int    @id @default(autoincrement())
-  name     String
-  unity_id Int?
+  id      Int    @id @default(autoincrement())
+  name    String
+  unityId Int?
 
-  unity Unity? @relation(fields: [unity_id], references: [id])
+  unity Unity? @relation(fields: [unityId], references: [id])
   games Game[]
 
   @@map("places")
@@ -43,14 +41,14 @@ enum Type {
 }
 
 model Modality {
-  id               Int    @id @default(autoincrement())
-  name             String
-  type             Type
-  members_quantity Int
-  teams_quantity   Int
-  unity_id         Int?
+  id              Int    @id @default(autoincrement())
+  name            String
+  type            Type
+  membersQuantity Int
+  teamsQuantity   Int
+  unityId         Int?
 
-  unity Unity? @relation(fields: [unity_id], references: [id])
+  unity Unity? @relation(fields: [unityId], references: [id])
   games Game[]
   teams Team[]
 
@@ -72,8 +70,8 @@ model User {
   password String
   profile  Profile
 
-  unity    Unity? @relation(fields: [unity_id], references: [id])
-  unity_id Int?
+  unity   Unity? @relation(fields: [unityId], references: [id])
+  unityId Int?
 
   games Game[]
 
@@ -87,39 +85,49 @@ enum Genre {
 }
 
 model Team {
-  id          Int    @id @default(autoincrement())
-  name        String
-  group       String
-  genre       Genre
-  modality_id Int?
-  unity_id    Int?
-  students    Json
+  id         Int    @id @default(autoincrement())
+  name       String
+  group      String
+  genre      Genre
+  modalityId Int?
+  unityId    Int?
+  students   Json
 
-  modality Modality? @relation(fields: [modality_id], references: [id])
-  unity    Unity?    @relation(fields: [unity_id], references: [id])
+  modality Modality? @relation(fields: [modalityId], references: [id])
+  unity    Unity?    @relation(fields: [unityId], references: [id])
 
   @@map("teams")
 }
 
 model Game {
-  id          Int      @id @default(autoincrement())
-  date        DateTime
-  startHours  String
-  endHours    String
-  comments    String?
-  teams       Json
-  place_id    Int?
-  modality_id Int?
-  user_id     Int?
-  unity_id    Int?
+  id         Int      @id @default(autoincrement())
+  date       DateTime
+  startHours String
+  endHours   String
+  comments   String?
+  teams      Json
+  placeId    Int?
+  modalityId Int?
+  userId     Int?
+  unityId    Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  Place    Place?    @relation(fields: [place_id], references: [id])
-  Modality Modality? @relation(fields: [modality_id], references: [id])
-  User     User?     @relation(fields: [user_id], references: [id])
-  Unity    Unity?    @relation(fields: [unity_id], references: [id])
+  Place    Place?    @relation(fields: [placeId], references: [id])
+  Modality Modality? @relation(fields: [modalityId], references: [id])
+  User     User?     @relation(fields: [userId], references: [id])
+  Unity    Unity?    @relation(fields: [unityId], references: [id])
 
   @@map("games")
+}
+
+model Setup {
+  id           Int    @id @default(autoincrement())
+  documentLink String
+
+  unity   Unity? @relation(fields: [unityId], references: [id])
+  unityId Int?
+
+  @@map("setups")
 }

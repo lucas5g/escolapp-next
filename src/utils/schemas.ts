@@ -13,10 +13,10 @@ export const UpdatePlaceSchema = CreatePlaceSchema.partial()
 
 export const CreateModalitySchema = z.object({
   name: z.string(),
-  members_quantity: z.coerce.number(),
-  teams_quantity: z.coerce.number(),
+  membersQuantity: z.coerce.number(),
+  teamsQuantity: z.coerce.number(),
   type: z.enum(['collective', 'individual', 'participative', 'ranking']),
-  unity_id: z.number()
+  unityId: z.number()
 })
 
 export const UpdateModalitySchema = CreateModalitySchema.partial()

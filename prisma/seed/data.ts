@@ -1,16 +1,20 @@
+import { Modality, Unity } from "@prisma/client"
 
-export const unities = [
+export const unities:Unity[] = [
   {
     id: 1,
-    name: 'bh'
+    name: 'bh',
+    spreedsheetId:'id1',
   },
   {
     id: 2,
-    name: 'contagem'
+    name: 'contagem',
+    spreedsheetId: 'id2'
   },
   {
     id: 3,
-    name: 'unity test'
+    name: 'unity test',
+    spreedsheetId: 'id3'
   }
 ]
 export const groups = [
@@ -31,7 +35,7 @@ export const groups = [
   }
 ]
 
-export const modalities = [
+export const modalities:Modality[] = [
   {
     "id": 1,
     "name": "Futebol",

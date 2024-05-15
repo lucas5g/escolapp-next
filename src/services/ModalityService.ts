@@ -1,36 +1,40 @@
 import { prisma } from '@/libs/prisma'
-import { CreateModalitySchema } from '@/utils/schemas'
-import { CreateModalityType } from '@/utils/types'
+import { CreateModalitySchema, UpdateModalitySchema } from '@/utils/schemas'
+import { CreateModalityType, UpdateModalityType } from '@/utils/types'
 export class ModalityService {
 
-  async create(data: CreateModalityType) {
+  create(data: CreateModalityType) {
     return prisma.modality.create({
       data: CreateModalitySchema.parse(data)
     })
   }
 
 
-  static async findMany({ unityId }: { unityId: number }) {
-    return await ModalityRepository.findMany({ unityId })
+  findAll({ unityId }: { unityId: number }) {
+    return prisma.modality.findMany({
+      where: { unityId }
+    })
   }
 
-  static async findById(id: number) {
-    return await ModalityRepository.findById(id)
+  findOne(id: number) {
+    return prisma.modality.findUniqueOrThrow({
+      where: { id }
+    })
   }
 
 
+  update(id: number, data: UpdateModalityType) {
+    return prisma.modality.update({
+      where: { id },
+      data: UpdateModalitySchema.parse(data)
+    })
 
-  static async update(id: number, data: any) {
-
-    const modality = modalitySchema.parse(data)
-
-    return await ModalityRepository.update(id, modality)
   }
 
   async delete(id: number) {
-  //   if (await prisma.game.findUnique({ where: {id} })) {
-  //     throw new Error('Não foi possível deletar :(\nPossui Equipes com essa modalidade.')
-  //   }
+    //   if (await prisma.game.findUnique({ where: {id} })) {
+    //     throw new Error('Não foi possível deletar :(\nPossui Equipes com essa modalidade.')
+    //   }
     return await prisma.modality.delete({
       where: { id }
     })
