@@ -1,52 +1,53 @@
-import moment from "moment";
+import { GameService } from "@/services/GameService";
 import { describe, expect, it } from "vitest";
-import { GameService } from "../services/GameService";
+
+
 
 describe('Game', () => {
-  it('Game list', async () => {
-    const games = await GameService.findMany({})
-    games.forEach(game => {
-      expect(game).toHaveProperty('modality')
-      expect(game).toHaveProperty('user')
-      expect(game).toHaveProperty('place')
-      expect(game).toHaveProperty('teams')
-      expect(game).toHaveProperty('datetime')
-      expect(game.teams[0]).toHaveProperty('students')
-      expect(game.teams[0]).toHaveProperty('goals')
-      expect(game.teams[0]).toHaveProperty('points') 
-      expect(game.teams[0]).toHaveProperty('fairPlay') 
 
-      
-    })
-  }, 5000)
+  const service = new GameService()
+  const properties = ['id', 'date', 'startHours', 'endHours', 'comments', 'teams', 'placeId', 'modalityId', 'userId', 'unityId', 'createdAt', 'updatedAt']
 
-  it('Game crud', async () => {
-
+  it('create', async () => {
+    const today = new Date()
     const data = {
-      date: new Date().toISOString(),
+      date: today.toISOString(),
       startHours: '07:00',
       endHours: '08:00',
       placeId: 1,
       modalityId: 1,
       userId: 1,
       teams: [
-        {id: 1, goals: 1, fairPlay:0,  points: 3},
-        {id: 2, goals: 0, fairPlay:0,  points: 1},
+        { id: 1, goals: 1, fairPlay: 0, points: 3 },
+        { id: 2, goals: 0, fairPlay: 0, points: 1 },
       ]
-      // teams: [53, 40]
     }
-    /**
-     * Create
-     */
-    const game = await GameService.create(data)
-    expect(game).toHaveProperty('startHours', data.startHours)
-    expect(game).toHaveProperty('teams')
 
-    /**
-     * Show
-     */
-    const gameShow = await GameService.findById(game.id)
+    const res = await service.create(data)
+    await service.remove(res.id)
+
+    expect(res).toMatchObject({ ...data, date: today })
+
+
+  })
+
+  it('find all', async () => {
+    const res = await service.findAll({})
+
+    for (const row of res) {
+      expect(Object.keys(row)).toEqual(properties)
+    }
+  })
+
+  it.only('find one', async() => {
+    const res = await GameService.findById(id)
     expect(gameShow).toHaveProperty('startHours')
+  })
+
+  it('Game crud', async () => {
+
+
+
 
     /**
      * Update
@@ -61,13 +62,13 @@ describe('Game', () => {
     await GameService.delete(game.id)
   })
 
-  it('List game by userId', async() => {
+  it('List game by userId', async () => {
     const userId = 73
     const date = moment(moment().format('YYYY-MM-DD')).toISOString()
-    const games = await GameService.findMany({userId, date})
+    const games = await GameService.findMany({ userId, date })
     // console.log(games)
     games.forEach(game => {
-      expect(game).contain({userId})
+      expect(game).contain({ userId })
     })
 
   }, 5100)

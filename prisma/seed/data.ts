@@ -1,10 +1,10 @@
-import { Modality, Unity } from "@prisma/client"
+import { Modality, Unity, User } from "@prisma/client"
 
-export const unities:Unity[] = [
+export const unities: Unity[] = [
   {
     id: 1,
     name: 'bh',
-    spreedsheetId:'id1',
+    spreedsheetId: 'id1',
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ export const groups = [
   {
     id: 1,
     name: 'TESTE',
-    unityId:2
+    unityId: 2
   },
   {
     "id": 2,
@@ -35,7 +35,7 @@ export const groups = [
   }
 ]
 
-export const modalities:Modality[] = [
+export const modalities: Modality[] = [
   {
     "id": 1,
     "name": "Futebol",
@@ -73,12 +73,11 @@ export const places = [
   }
 ]
 
-export const users = [
+export const users: User[] = [
   {
     id: 1,
     email: 'admin@mail.com',
     password: 'qweqwe',
-    name: 'admin',
     unityId: 2,
     profile: 'manager'
   },
@@ -86,7 +85,6 @@ export const users = [
     id: 2,
     email: 'juiz@mail.com',
     password: 'qweqwe',
-    name: 'juiz',
     unityId: 2,
     profile: 'judge'
   },
@@ -94,7 +92,6 @@ export const users = [
     id: 3,
     email: 'coordenador@mail.com',
     password: 'qweqwe',
-    name: 'coordenador',
     unityId: 2,
     profile: 'coordinator'
   },
@@ -137,7 +134,7 @@ export const teams = [
     modalityId: 1,
     groupId: 1,
     genreId: 3,
-    students:['C123123', 'C321321']
+    students: ['C123123', 'C321321']
   },
   {
     id: 2,
@@ -145,7 +142,7 @@ export const teams = [
     modalityId: 2,
     groupId: 1,
     genreId: 1,
-    students:['C123123', 'C321321']
+    students: ['C123123', 'C321321']
   },
   {
     id: 3,
@@ -153,7 +150,7 @@ export const teams = [
     modalityId: 1,
     groupId: 1,
     genreId: 3,
-    students:['C123123', 'C321321']
+    students: ['C123123', 'C321321']
   },
   {
     id: 4,
@@ -161,7 +158,7 @@ export const teams = [
     modalityId: 1,
     groupId: 1,
     genreId: 3,
-    students:['C123123', 'C321321']
+    students: ['C123123', 'C321321']
   },
 ]
 
@@ -170,12 +167,12 @@ export const setups = [
   {
     id: 1,
     unityId: 2,
-    documentLink:'https://docs.google.com/document/d/1U0uJvTwSmepAQZgiPAlbNiqYBY4RggBCV4bjtO5H9zY/edit?usp=drive_link'
+    documentLink: 'https://docs.google.com/document/d/1U0uJvTwSmepAQZgiPAlbNiqYBY4RggBCV4bjtO5H9zY/edit?usp=drive_link'
   },
   {
     id: 2,
     unityId: 1,
-    documentLink:'https://docs.google.com/document/d/1U0uJvTwSmepAQZgiPAlbNiqYBY4RggBCV4bjtO5H9zY/edit?usp=drive_link'
+    documentLink: 'https://docs.google.com/document/d/1U0uJvTwSmepAQZgiPAlbNiqYBY4RggBCV4bjtO5H9zY/edit?usp=drive_link'
   },
 
 ]

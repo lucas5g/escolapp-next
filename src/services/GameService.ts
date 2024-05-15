@@ -1,24 +1,27 @@
-import { cache } from "@/libs/node-cache";
-import { GameRepository } from "@/repositories/GameRepository";
-import { StudentRepository } from "@/repositories/StudentRepository";
-import { TeamRepository } from "@/repositories/TeamRepository";
-import { GameFilterType, GameType, gameFilterSchema, gameSchema } from "@/utils/schemas";
-import { Prisma } from "@prisma/client";
-import moment from "moment";
+import { prisma } from "@/libs/prisma";
+import { CreateGameSchema, FindGameSchema } from '@/utils/schemas'
+import { CreateGameType, FindGameType,  } from "@/utils/types";
+
 
 export class GameService {
 
-  static async findMany(data:GameFilterType) {
+  create(data: CreateGameType) {
+    return prisma.game.create({
+      data: CreateGameSchema.parse(data)
+    })
+  }
 
-    const gamesCache = `games_${data.userId}_${data.date}`
-    if(cache.has(gamesCache)){
-      return cache.get(gamesCache) as any[]
-    }
 
-    const filter = gameFilterSchema.parse(data)
+  async findAll(data: FindGameType) {
+
+    const filter = FindGameSchema.parse(data)
+
+    return await prisma.game.findMany({
+      where:filter
+    })
 
     const gamesWithoutTeams = await GameRepository.findMany(filter)
-    const students = await StudentRepository.findMany({unity:'contagem'}) 
+    const students = await StudentRepository.findMany({ unity: 'contagem' })
     const teams = await TeamRepository.findMany({})
 
 
@@ -54,11 +57,6 @@ export class GameService {
     return await GameRepository.findById(id)
   }
 
-  static async create(data: GameType) {
-    cache.flushAll()
-    const game = gameSchema.parse(data)
-    return await GameRepository.create(game)
-  }
 
   static async update(id: number, data: GameType) {
     cache.flushAll()
@@ -66,8 +64,9 @@ export class GameService {
     return await GameRepository.update(id, game)
   }
 
-  static async delete(id: number) {
-    cache.flushAll()
-    return await GameRepository.delete(id)
+  remove(id: number) {
+    return prisma.game.delete({
+      where: { id }
+    })
   }
 }

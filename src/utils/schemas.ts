@@ -77,7 +77,7 @@ export const authUpdateMeSchema = z.object({
 
 export type authType = z.infer<typeof authSchema>
 
-export const gameSchema = z.object({
+export const CreateGameSchema = z.object({
   date: z.string().datetime(),
   startHours: z.string(),
   endHours: z.string(),
@@ -95,15 +95,12 @@ export const gameSchema = z.object({
   )
 })
 
-export const gameFilterSchema = z.object({
+export const UpdateGameSchema = CreateGameSchema.partial()
+
+export const FindGameSchema = z.object({
   userId: z.coerce.number().optional(),
   date: z.string().datetime().optional(),
-
 })
-
-export type GameType = z.infer<typeof gameSchema>
-export type GameFilterType = z.infer<typeof gameFilterSchema>
-
 
 
 
