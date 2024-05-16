@@ -1,4 +1,5 @@
 import { Modality, Unity, User } from "@prisma/client"
+import {format} from 'date-fns'
 
 export const unities: Unity[] = [
   {
@@ -95,16 +96,12 @@ export const users: User[] = [
     unityId: 2,
     profile: 'coordinator'
   },
-
-
-
 ]
 
 export const games = [
   {
     id: 1,
-    // date: "2023-03-15",
-    date: new Date().toISOString(),
+    date: format(new Date(), 'yyyy-MM-dd'),
     startHours: "08:00",
     endHours: "09:00",
     placeId: 1,

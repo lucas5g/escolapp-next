@@ -1,4 +1,7 @@
 import { GameService } from "@/services/GameService";
+import { FindGameType, UpdateGameType } from "@/utils/types";
+import { randomInt } from "crypto";
+import { format } from "date-fns";
 import { describe, expect, it } from "vitest";
 
 
@@ -7,11 +10,11 @@ describe('Game', () => {
 
   const service = new GameService()
   const properties = ['id', 'date', 'startHours', 'endHours', 'comments', 'teams', 'placeId', 'modalityId', 'userId', 'unityId', 'createdAt', 'updatedAt']
+  const date = format(new Date(), 'yyyy-MM-dd')
 
   it('create', async () => {
-    const today = new Date()
     const data = {
-      date: today.toISOString(),
+      date,
       startHours: '07:00',
       endHours: '08:00',
       placeId: 1,
@@ -26,7 +29,7 @@ describe('Game', () => {
     const res = await service.create(data)
     await service.remove(res.id)
 
-    expect(res).toMatchObject({ ...data, date: today })
+    expect(res).toMatchObject(data)
 
 
   })
@@ -39,38 +42,36 @@ describe('Game', () => {
     }
   })
 
-  it.only('find one', async() => {
-    const res = await GameService.findById(id)
-    expect(gameShow).toHaveProperty('startHours')
+  it('find by userId', async () => {
+    const data:FindGameType = {
+      userId: 2,
+      date
+    }
+
+    const res = await service.findAll(data)
+
+    for(const row of res){
+      expect(row).toMatchObject(data)
+    }
+
   })
 
-  it('Game crud', async () => {
-
-
-
-
-    /**
-     * Update
-     */
-    const gameUpdate = await GameService.update(game.id, { ...data, startHours: moment().format('HH:MM') })
-    expect(gameUpdate).toHaveProperty('startHours', moment().format('HH:MM'))
-    // expect(gameUpdate.teams).deep.equal(data.teams)
-
-    /**
-     * Delete
-     */
-    await GameService.delete(game.id)
+  it('find one', async() => {
+    const res = await service.findOne(1)
+    expect(Object.keys(res)).toEqual(properties)
   })
 
-  it('List game by userId', async () => {
-    const userId = 73
-    const date = moment(moment().format('YYYY-MM-DD')).toISOString()
-    const games = await GameService.findMany({ userId, date })
-    // console.log(games)
-    games.forEach(game => {
-      expect(game).contain({ userId })
-    })
+  it('update', async() => {
 
-  }, 5100)
+    const data:UpdateGameType = {
+      comments: `Comentario ${randomInt(10)}`
+    }
+
+    const res = await service.update(1, data)
+
+    expect(res).toMatchObject(data)
+  })
+
+  
 
 })
