@@ -52,32 +52,16 @@ describe('Modality', () => {
 
 
 
-  it.skip('Try to delete modality that has a team', async () => {
+  it.only('try to delete modality that has a team', async () => {
+    const res = await service.delete(1)
 
-    const modality: UpdateModalityType = {
-      name: 'test modality del',
-      membersQuantity: 1,
-      teamsQuantity: 2,
-      type: 'collective',
-      unityId: 2
-    }
+ 
+    // const { id: teamId } = await TeamService.create(team)
 
-    const { id: modalityId } = await ModalityService.create(modality)
+    // await expect(() => ModalityService.delete(modalityId)).rejects.toThrow('Possui Equipes com essa modalidade.')
 
-    const team = {
-      name: 'team del',
-      students: ['c123123', 'c132132'],
-      modalityId,
-      groupId: 1,
-      genreId: 1
-
-    }
-    const { id: teamId } = await TeamService.create(team)
-
-    await expect(() => ModalityService.delete(modalityId)).rejects.toThrow('Possui Equipes com essa modalidade.')
-
-    await TeamService.delete(teamId)
-    await ModalityService.delete(modalityId)
+    // await TeamService.delete(teamId)
+    // await ModalityService.delete(modalityId)
   })
 
 })

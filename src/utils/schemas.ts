@@ -6,7 +6,7 @@ import { z } from "zod";
 
 export const CreatePlaceSchema = z.object({
   name: z.string(),
-  unity_id: z.number()
+  unityId: z.number()
 })
 
 export const UpdatePlaceSchema = CreatePlaceSchema.partial()
@@ -99,6 +99,7 @@ export const UpdateGameSchema = CreateGameSchema.partial()
 
 export const FindGameSchema = z.object({
   userId: z.coerce.number(),
+  placeId: z.coerce.number(),
   date: z.string(),
 }).partial()
 

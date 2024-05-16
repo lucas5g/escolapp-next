@@ -1,4 +1,5 @@
 import { prisma } from '@/libs/prisma'
+import { TeamService } from '@/services/TeamService'
 import { CreateModalitySchema, UpdateModalitySchema } from '@/utils/schemas'
 import { CreateModalityType, UpdateModalityType } from '@/utils/types'
 export class ModalityService {
@@ -32,6 +33,7 @@ export class ModalityService {
   }
 
   async delete(id: number) {
+    const modalitiesInTeamExist = await new TeamService.
     //   if (await prisma.game.findUnique({ where: {id} })) {
     //     throw new Error('Não foi possível deletar :(\nPossui Equipes com essa modalidade.')
     //   }

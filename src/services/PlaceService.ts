@@ -1,4 +1,5 @@
 import { prisma } from "@/libs/prisma"
+import { GameService } from "@/services/GameService"
 import { CreatePlaceSchema, UpdatePlaceSchema } from "@/utils/schemas"
 import { CreatePlaceType, UpdatePlaceType } from "@/utils/types"
 
@@ -29,15 +30,17 @@ export class PlaceService {
     })
   }
 
-  delete(id: number) {
+  async remove(id: number) {
+
+    const placesInGameExist = await new GameService().findAll({placeId: id}) 
+
+    if(placesInGameExist.length){
+      throw new Error('Não foi possível deletar!\nPossui jogos com esse local.')
+    }
+
     return prisma.place.delete({
       where: { id }
     })
 
-    // if (await GameRepository.findByColumn('placeId', id)) {
-    //   throw new Error('Não foi possível deletar :(\nPossui Jogos com este local.')
-    // }
-
-    // return await PlaceRepository.delete(id)
   }
 }

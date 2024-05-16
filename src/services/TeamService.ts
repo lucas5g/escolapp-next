@@ -1,32 +1,13 @@
 import { TeamType, teamQuerySchema, teamSchema } from "../utils/schemas"
 import { Prisma } from "@prisma/client"
 import { StudentService } from "./StudentService"
+import { prisma } from "@/libs/prisma"
 
 export class TeamService {
-  static async findMany(data?: teamQuerySchema) {
-    const teamsCache = `teams_${data?.modalityId}`
-    if(cache.has(teamsCache)){
-      return cache.get(teamsCache) as any[]
-    }
-
-    const filter = teamQuerySchema.parse(data)    
-    
-    const teamsWithoutStudents = await TeamRepository.findMany({modalityId: filter.modalityId})
-    const students = await StudentService.findMany({unity: 'contagem'})
-
-    const teams = teamsWithoutStudents.map(team => {
-      const teamStudents = team.students as Prisma.JsonArray
-      return {
-        ...team,
-        students: teamStudents.map( ra => {
-          return students.find(student => student.ra === ra )
-        })
-        
-      }
+  findMany(data?: teamQuerySchema) {
+    return prisma.team.findMany({
+      
     })
-
-    cache.set(teamsCache, teams)
-    return teams
   }
 
   static async findById(id: number) {
@@ -57,12 +38,12 @@ export class TeamService {
 
     const games = await GameRepository.findMany({})
 
-    const gameTeam = games.find( game => {
+    const gameTeam = games.find(game => {
       const teams = game.teams as Prisma.JsonArray
-      return teams.find((team:any) => team.id === id)
+      return teams.find((team: any) => team.id === id)
     })
 
-    if(gameTeam){
+    if (gameTeam) {
       throw new Error('Não foi possível deletar :(\nPossui jogos com essa equipe.')
     }
 

@@ -7,16 +7,16 @@ import { describe, expect, it } from "vitest";
 describe('Place', () => {
   const service = new PlaceService()
 
-  const properties = ['id', 'name', 'unity_id']
+  const properties = ['id', 'name', 'unityId']
 
   it('create', async () => {
     const data: CreatePlaceType = {
       name: 'some place',
-      unity_id: 2
+      unityId: 2
     }
     const res = await service.create(data)
 
-    await service.delete(res.id)
+    await service.remove(res.id)
 
     expect(res).toMatchObject(data)
   })
@@ -41,6 +41,12 @@ describe('Place', () => {
     const res = await service.update(1, data)
 
     expect(res).toMatchObject(data)
+  })
+
+  it('try delete place with game', async() => {
+    expect(service.remove(1))
+      .rejects
+      .toThrow('Não foi possível deletar!\nPossui jogos com esse local.')
   })
 
 })
