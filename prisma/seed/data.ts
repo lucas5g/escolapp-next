@@ -1,4 +1,4 @@
-import { Modality, Unity, User } from "@prisma/client"
+import { Modality, Prisma, Team, Unity, User } from "@prisma/client"
 import {format} from 'date-fns'
 
 export const unities: Unity[] = [
@@ -124,37 +124,41 @@ export const games = [
   }
 ]
 
-export const teams = [
+export const teams: Team[] = [
   {
     id: 1,
     name: 'Futebol',
     modalityId: 1,
-    groupId: 1,
-    genreId: 3,
+    group: 'f1',
+    genre: 'mas',
+    unityId:2,
     students: ['C123123', 'C321321']
   },
   {
     id: 2,
     name: 'xadrez',
     modalityId: 2,
-    groupId: 1,
-    genreId: 1,
+    group: 'f2',
+    genre: 'misto',
+    unityId: 2,
     students: ['C123123', 'C321321']
   },
   {
     id: 3,
     name: 'Futebol 3',
     modalityId: 1,
-    groupId: 1,
-    genreId: 3,
+    group: 'f1',
+    genre: 'mas',
+    unityId:2,
     students: ['C123123', 'C321321']
   },
   {
     id: 4,
     name: 'Futebol 4',
     modalityId: 1,
-    groupId: 1,
-    genreId: 3,
+    group: 'f2',
+    genre: 'misto',
+    unityId: 2,
     students: ['C123123', 'C321321']
   },
 ]

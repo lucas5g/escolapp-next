@@ -1,54 +1,65 @@
-import { TeamType, teamQuerySchema, teamSchema } from "../utils/schemas"
-import { Prisma } from "@prisma/client"
-import { StudentService } from "./StudentService"
 import { prisma } from "@/libs/prisma"
+import { CreateTeamSchema, FindTeamSchema, UpdateTeamSchema } from "@/utils/schemas"
+import { CreateTeamType, FindTeamType, UpdateTeamType } from "@/utils/types"
 
 export class TeamService {
 
-  create(data: TeamType) {
-  
-    if (await TeamRepository.findByColumn('name', team.name)) {
-      throw new Error(`Já foi cadastrado o time com o nome ${team.name}!`)
+  async create(createTeam: CreateTeamType) {
+
+    const data = CreateTeamSchema.parse(createTeam)
+    const teamsNameExist = await this.findAll({ name: data.name })
+    if (teamsNameExist.length) {
+      throw new Error(`Já foi cadastrado o time com o nome ${data.name}!`)
     }
 
     return prisma.team.create({
-      
+      data
     })
   }
 
-  findMany(data?: teamQuerySchema) {
+  findAll(data: FindTeamType) {
     return prisma.team.findMany({
-      
+      where: FindTeamSchema.parse(data)
     })
   }
 
-  static async findById(id: number) {
-    return await TeamRepository.findById(id)
+  findOne(id: number) {
+    return prisma.team.findUniqueOrThrow({
+      where:{id}
+    })
   }
 
-
-
-  static async update(id: number, data: any) {
-    cache.flushAll()
-
-    const team = teamSchema.parse(data)
-    return await TeamRepository.update(id, team)
+  update(id: number, data: UpdateTeamType) {
+    return prisma.team.update({
+      where:{id},
+      data:UpdateTeamSchema.parse(data)
+    })
   }
 
-  static async delete(id: number) {
-    cache.flushAll()
+  async remove(id: number) {
 
-    const games = await GameRepository.findMany({})
-
-    const gameTeam = games.find(game => {
-      const teams = game.teams as Prisma.JsonArray
-      return teams.find((team: any) => team.id === id)
+    const games = await prisma.game.findMany({
+      where:{
+        teams:{
+         string_contains: "id"
+        //  string_contains: `"id":${id}`
+        }
+      }
     })
 
-    if (gameTeam) {
-      throw new Error('Não foi possível deletar :(\nPossui jogos com essa equipe.')
-    }
+    return games
+    // const gameTeam = games.find(game => {
+    //   const teams = game.teams as Prisma.JsonArray
+    //   return teams.find((team: any) => team.id === id)
+    // })
 
-    return await TeamRepository.delete(id)
+    // if (gameTeam) {
+    //   throw new Error('Não foi possível deletar :(\nPossui jogos com essa equipe.')
+    // }
+    return id
+
+    return await prisma.team.delete({
+      where: { id }
+    })
   }
 }

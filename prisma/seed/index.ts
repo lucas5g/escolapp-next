@@ -1,18 +1,9 @@
-import { PrismaClient } from '@prisma/client'
+import { Genre, Prisma, PrismaClient } from '@prisma/client'
 
 
 import { games, groups, modalities, places, setups, teams, unities, users } from './data'
 
 const prisma = new PrismaClient();
-const types: any = {
-  collective: 'collective',
-  individual: 'individual'
-};
-const profiles: any = {
-  manager: 'manager',
-  judge: 'judge',
-  coordinator: 'coordinator'
-};
 
 async function main() {
   for (const unity of unities) {
@@ -43,6 +34,15 @@ async function main() {
         where: {id: user.id},
         create: user,
         update: user
+      })
+    }
+
+    for(const team of teams){
+
+      await prisma.team.upsert({
+        where: {id: team.id},
+        create:team,
+        update: team
       })
     }
 

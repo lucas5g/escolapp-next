@@ -1,3 +1,4 @@
+import { Genre } from "@prisma/client";
 import { z } from "zod";
 
 /**
@@ -117,12 +118,18 @@ export type StudentFilterType = z.infer<typeof studentFilterSchema>
 export const CreateTeamSchema = z.object({
   name: z.string(),
   modalityId: z.coerce.number(),
-  groupId: z.coerce.number(),
-  genreId: z.coerce.number(),
-  students:z.string().array()
+  group: z.string(),
+  genre: z.nativeEnum(Genre),
+  students:z.string().array(),
+  unityId: z.number()
 })
 
 export const UpdateTeamSchema = CreateTeamSchema.partial()
+export const FindTeamSchema = z.object({
+  unityId: z.number(),
+  name: z.string(),
+  modalityId: z.number()
+}).partial()
 
 
 
