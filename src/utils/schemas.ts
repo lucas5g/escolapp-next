@@ -114,7 +114,7 @@ export const studentFilterSchema = z.object({
 
 export type StudentFilterType = z.infer<typeof studentFilterSchema>
 
-export const teamSchema = z.object({
+export const CreateTeamSchema = z.object({
   name: z.string(),
   modalityId: z.coerce.number(),
   groupId: z.coerce.number(),
@@ -122,12 +122,7 @@ export const teamSchema = z.object({
   students:z.string().array()
 })
 
-export const teamQuerySchema = z.object({
-  modalityId: z.coerce.number().optional(),
-})
-
-export type TeamType = z.infer<typeof teamSchema>
-export type teamQuerySchema = z.infer<typeof teamQuerySchema>
+export const UpdateTeamSchema = CreateTeamSchema.partial()
 
 
 

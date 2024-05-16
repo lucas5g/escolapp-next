@@ -4,6 +4,18 @@ import { StudentService } from "./StudentService"
 import { prisma } from "@/libs/prisma"
 
 export class TeamService {
+
+  create(data: TeamType) {
+  
+    if (await TeamRepository.findByColumn('name', team.name)) {
+      throw new Error(`Já foi cadastrado o time com o nome ${team.name}!`)
+    }
+
+    return prisma.team.create({
+      
+    })
+  }
+
   findMany(data?: teamQuerySchema) {
     return prisma.team.findMany({
       
@@ -14,17 +26,7 @@ export class TeamService {
     return await TeamRepository.findById(id)
   }
 
-  static async create(data: TeamType) {
-    cache.flushAll()
 
-    const team = teamSchema.parse(data)
-
-    if (await TeamRepository.findByColumn('name', team.name)) {
-      throw new Error(`Já foi cadastrado o time com o nome ${team.name}!`)
-    }
-
-    return await TeamRepository.create(team)
-  }
 
   static async update(id: number, data: any) {
     cache.flushAll()

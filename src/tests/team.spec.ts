@@ -3,7 +3,26 @@ import { TeamService } from "@/services/TeamService";
 import { describe, expect, it } from "vitest";
 
 
-describe('Team', () => {
+describe('team', () => {
+  const service = new TeamService()
+
+  it('create', async() => {
+    const data = {
+      name: 'Team delete',
+      modalityId: 1,
+      groupId: 1,
+      genreId: 3,
+      students: [
+        'C123123',
+        'C111222'
+      ]
+    }
+
+    const res = await service.create(data)
+
+    expect(res).toMatchObject(data)
+  })
+
 
   it('Team list', async () => {
     const teams = await TeamService.findMany({})
@@ -26,22 +45,7 @@ describe('Team', () => {
 
   it('Team crud', async () => {
 
-    const data = {
-      name: 'Team delete',
-      modalityId: 1,
-      groupId: 1,
-      genreId: 3,
-      students: [
-        'C123123',
-        'C111222'
-      ]
-    }
-
-    /**
-     * Create
-     */
-    const team = await TeamService.create(data)
-    expect(team).toHaveProperty('name', data.name)
+   
 
     expect(await TeamService.update(team.id, data))
 
