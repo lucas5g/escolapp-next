@@ -63,7 +63,7 @@ describe('team', () => {
 
     const res = await service.remove(1)
 
-    console.log(res)
+    console.log(JSON.stringify(res, null, 2))
 
     // await expect(() => TeamService.delete(teamId)).rejects.toThrow('Possui jogos com essa equipe.')
 

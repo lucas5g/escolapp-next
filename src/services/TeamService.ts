@@ -25,26 +25,48 @@ export class TeamService {
 
   findOne(id: number) {
     return prisma.team.findUniqueOrThrow({
-      where:{id}
+      where: { id }
     })
   }
 
   update(id: number, data: UpdateTeamType) {
     return prisma.team.update({
-      where:{id},
-      data:UpdateTeamSchema.parse(data)
+      where: { id },
+      data: UpdateTeamSchema.parse(data)
     })
   }
 
   async remove(id: number) {
-    return await prisma.team.delete({
-      where: { id }
-    })
+    // return await prisma.team.delete({
+    //   where: { id }
+    // })
+
+    const test = [
+      {
+        "id": 1,
+        "gols": 0,
+        "points": 0,
+        "fairPlay": 0
+      },
+      {
+        "id": 3,
+        "gols": 0,
+        "points": 0,
+        "fairPlay": 0
+      }
+    ]
+
     const games = await prisma.game.findMany({
-      where:{
-        teams:{
-         string_contains: "id"
-        //  string_contains: `"id":${id}`
+      where: {
+        teams: {
+
+          path: '$[*].id',
+          // equals:1
+          array_contains: 1
+          // equals:test
+          // string_contains:id.toString()
+          //  string_contains: "id"
+          //  string_contains: `"id":${id}`
         }
       }
     })
@@ -60,6 +82,6 @@ export class TeamService {
     // }
     return id
 
-   
+
   }
 }
