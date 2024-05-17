@@ -124,7 +124,7 @@ model Game {
 
 model Setup {
   id           Int    @id @default(autoincrement())
-  documentLink String
+  documentLink String?
 
   unity   Unity? @relation(fields: [unityId], references: [id])
   unityId Int?

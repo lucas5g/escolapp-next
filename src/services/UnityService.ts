@@ -1,39 +1,36 @@
-import { cache } from "@/libs/node-cache";
-import { UnityRepository } from "../repositories/UnityRepository";
-import { unitySchema } from "../utils/schemas";
+import { prisma } from "@/libs/prisma"
+import { CreateUnitySchema, UpdateUnitySchema } from "@/utils/schemas"
+import { CreateUnityType, UpdateUnityType } from "@/utils/types"
 
-export class UnityService{
-  
-  static async findMany(){
-    if(cache.has('unities')){
-      return cache.get('unities') as {id:number, name:string}[]
-    }
-    const unities = await UnityRepository.findMany()
-    cache.set('unities', unities)
 
-    return unities
+export class UnityService {
 
+  create(data: CreateUnityType) {
+    return prisma.unity.create({
+      data: CreateUnitySchema.parse(data)
+    })
   }
 
-  static async findById(id:number){
-    return await UnityRepository.findById(id)
+  findAll() {
+    return prisma.unity.findMany()
   }
 
-  static async update(id:number, data:any){
-    cache.del('unities')
-
-    const unity = unitySchema.parse(data)
-    return await UnityRepository.update(id, unity)
+  findOne(id:number) {
+    return prisma.unity.findUniqueOrThrow({
+      where:{id}
+    })
   }
 
-  static async create(data:any){
-    cache.del('unities')
-
-    const unity = unitySchema.parse(data)
-    return await UnityRepository.create(unity)
+  update(id: number, data: UpdateUnityType) {
+    return prisma.unity.update({
+      where:{id},
+      data: UpdateUnitySchema.parse(data)
+    })
   }
 
-  static async delete(id:number){
-    return await UnityRepository.delete(id)
+  delete(id: number) {
+    return prisma.unity.delete({
+      where: { id }
+    })
   }
 }

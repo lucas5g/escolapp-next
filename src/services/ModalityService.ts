@@ -33,10 +33,11 @@ export class ModalityService {
   }
 
   async delete(id: number) {
-    const modalitiesInTeamExist = await new TeamService.
-    //   if (await prisma.game.findUnique({ where: {id} })) {
-    //     throw new Error('Não foi possível deletar :(\nPossui Equipes com essa modalidade.')
-    //   }
+    const modalitiesInTeamExist = await new TeamService().findAll({ modalityId: id })
+
+    if (modalitiesInTeamExist.length) {
+      throw new Error('Não foi possível deletar :(\nPossui Equipes com essa modalidade.')
+    }
     return await prisma.modality.delete({
       where: { id }
     })

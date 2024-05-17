@@ -1,9 +1,15 @@
 import { Genre } from "@prisma/client";
 import { z } from "zod";
 
-/**
- * Places 
- */
+
+const unityId =  z.number()
+
+
+export const FindGroupSchema = z.object({
+  unityId
+})
+
+
 
 export const CreatePlaceSchema = z.object({
   name: z.string(),
@@ -53,17 +59,6 @@ export const userFilterSchema = z.object({
 export type UserCreateType = z.infer<typeof userCreateSchema>
 export type UserUpdateType = z.infer<typeof userUpdateSchema>
 
-
-export const groupSchema = z.object({
-  name: z.string(),
-  unityId: z.number()
-})
-
-export const groupFilterSchema = z.object({
-  unityId: z.coerce.number()
-})
-
-export type GroupFilterType = z.infer<typeof groupFilterSchema>
 
 export const authSchema = z.object({
   email: z.string().email(),
@@ -133,13 +128,14 @@ export const FindTeamSchema = z.object({
 
 
 
-
-
-export const unitySchema = z.object({
-  name: z.string()
-})
-
 export const setupSchema = z.object({
   documentLink: z.string().url(),
   unityId: z.number()
 })
+
+export const CreateUnitySchema = z.object({
+  name: z.string(),
+  spreedsheetId: z.string()  
+})
+
+export const UpdateUnitySchema = CreateUnitySchema.partial()

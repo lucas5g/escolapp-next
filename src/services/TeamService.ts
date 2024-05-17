@@ -37,7 +37,9 @@ export class TeamService {
   }
 
   async remove(id: number) {
-
+    return await prisma.team.delete({
+      where: { id }
+    })
     const games = await prisma.game.findMany({
       where:{
         teams:{
@@ -58,8 +60,6 @@ export class TeamService {
     // }
     return id
 
-    return await prisma.team.delete({
-      where: { id }
-    })
+   
   }
 }

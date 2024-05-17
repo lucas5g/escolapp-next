@@ -52,16 +52,10 @@ describe('Modality', () => {
 
 
 
-  it.only('try to delete modality that has a team', async () => {
-    const res = await service.delete(1)
+  it('try to delete modality that has a team', async () => {
+    const res = service.delete(1)
 
- 
-    // const { id: teamId } = await TeamService.create(team)
-
-    // await expect(() => ModalityService.delete(modalityId)).rejects.toThrow('Possui Equipes com essa modalidade.')
-
-    // await TeamService.delete(teamId)
-    // await ModalityService.delete(modalityId)
+    expect(() => res).rejects.toThrow('Não foi possível deletar :(\nPossui Equipes com essa modalidade.')
   })
 
 })

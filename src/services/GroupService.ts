@@ -1,12 +1,15 @@
+import { googleSheets } from '@/libs/google-sheets';
+import { UnityService } from '@/services/UnityService';
+import { FindGroupType } from '@/utils/types';
+
 export class GroupService {
 
-  async findMany() {
-    const unity = await this.unityService.findOne(auth.unity_id);
+  async findAll(data: FindGroupType) {
+    const unity = await new UnityService().findOne(data.unityId)
 
-    const groups = (await googleSheets({
-      spreadsheetId: unity.spreedsheetId,
+    const groups = await googleSheets({
       range: 'G:H',
-    })) as {
+    }) as {
       turma: string;
       quantidade: number;
     }[];
@@ -19,5 +22,4 @@ export class GroupService {
       };
     });
   }
-}
 }
