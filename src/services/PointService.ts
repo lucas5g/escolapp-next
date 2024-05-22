@@ -11,7 +11,7 @@ export class PointService {
     const gamesTeams =  games.map(game => (
       game.teams
     )).flat()
-
+    //let uniqueObjArray = [...new Map(objArray.map((item) => [item["id"], item])).values()];
     // const teamsIds = [...new Set] gamesTeams.map((gameTeam:any) => gameTeam.id
     // const teamsIds = [...new Set(gamesTeams.)]
     // const teamsIds = []
