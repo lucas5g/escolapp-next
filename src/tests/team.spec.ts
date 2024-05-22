@@ -52,20 +52,19 @@ describe('team', () => {
   })
 
   it('filter by modality', async () => {
-    const modalityId = 2
+    const modalityId = 1
     const res = await service.findAll({ modalityId })
 
     expect(res[0]).toMatchObject({modalityId})
 
   })
 
-  it.only('try to delete team that has a game', async() => {
+  it('try to delete team that has a game', async() => {
 
-    const res = await service.remove(1)
+    const res = service.remove(1)
 
-    console.log(JSON.stringify(res, null, 2))
+    expect(() => res).rejects.toThrow('Não foi possível deletar :(\nPossui jogos com essa equipe.')
 
-    // await expect(() => TeamService.delete(teamId)).rejects.toThrow('Possui jogos com essa equipe.')
 
   })
 

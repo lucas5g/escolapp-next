@@ -1,77 +1,12 @@
-import { Genre } from "@prisma/client";
+import { Genre, Profile } from "@prisma/client";
 import { z } from "zod";
-
 
 const unityId =  z.number()
 
 
-export const FindGroupSchema = z.object({
-  unityId
-})
-
-
-
-export const CreatePlaceSchema = z.object({
-  name: z.string(),
-  unityId: z.number()
-})
-
-export const UpdatePlaceSchema = CreatePlaceSchema.partial()
-
-export const CreateModalitySchema = z.object({
-  name: z.string(),
-  membersQuantity: z.coerce.number(),
-  teamsQuantity: z.coerce.number(),
-  type: z.enum(['collective', 'individual', 'participative', 'ranking']),
-  unityId: z.number()
-})
-
-export const UpdateModalitySchema = CreateModalitySchema.partial()
-
-
-
-
-const profiles = [
-  'coordinator', 
-  'admin',
-  'teacher',
-  'judge',
-  'manager', 
-  'representative'
-] as const 
-
-export const userCreateSchema = z.object({
-  name: z.string(),
-  email: z.string().email(),
-  password: z.string(),
-  profile: z.enum(profiles), 
-  unityId: z.number()
-})  
-
-export const userUpdateSchema = userCreateSchema.extend({
-  id: z.number().optional(),
-  password: z.string().optional()
-})
-
-export const userFilterSchema = z.object({
-  profile: z.enum(profiles).optional()
-})
-export type UserCreateType = z.infer<typeof userCreateSchema>
-export type UserUpdateType = z.infer<typeof userUpdateSchema>
-
-
-export const authSchema = z.object({
-  email: z.string().email(),
-  password: z.string()
-})
-
-export const authUpdateMeSchema = z.object({
-  name: z.string(),
-  password: z.string().optional(),
-  unityId: z.number()
-})
-
-export type authType = z.infer<typeof authSchema>
+/**
+ * Game
+ */
 
 export const CreateGameSchema = z.object({
   date: z.string(),
@@ -101,14 +36,61 @@ export const FindGameSchema = z.object({
 
 
 
-export const studentFilterSchema = z.object({
-  group: z.string().optional(),
-  unity: z.string()
-  // codcur:z.coerce.number().optional(),
-  // codper:z.coerce.number().optional()
+/**
+ * Group
+ */
+export const FindGroupSchema = z.object({
+  unityId
 })
 
-export type StudentFilterType = z.infer<typeof studentFilterSchema>
+/**
+ * Modality
+ */
+export const CreateModalitySchema = z.object({
+  name: z.string(),
+  membersQuantity: z.coerce.number(),
+  teamsQuantity: z.coerce.number(),
+  type: z.enum(['collective', 'individual', 'participative', 'ranking']),
+  unityId: z.number()
+})
+
+export const UpdateModalitySchema = CreateModalitySchema.partial()
+
+/**
+ * Place
+ */
+
+export const CreatePlaceSchema = z.object({
+  name: z.string(),
+  unityId: z.number()
+})
+
+export const UpdatePlaceSchema = CreatePlaceSchema.partial()
+
+/**
+ * Point
+ */
+export const FindPointSchema = z.object({
+  unityId
+})
+
+
+/**
+ * Setup
+ */
+
+export const CreateSetupSchema = z.object({
+  documentLink: z.string().url(),
+  unityId: z.number()
+})
+
+/**
+ * Student
+ */
+
+/**
+ * Team
+ */
 
 export const CreateTeamSchema = z.object({
   name: z.string(),
@@ -126,12 +108,9 @@ export const FindTeamSchema = z.object({
   modalityId: z.number()
 }).partial()
 
-
-
-export const setupSchema = z.object({
-  documentLink: z.string().url(),
-  unityId: z.number()
-})
+/**
+ * Unity
+ */
 
 export const CreateUnitySchema = z.object({
   name: z.string(),
@@ -139,3 +118,27 @@ export const CreateUnitySchema = z.object({
 })
 
 export const UpdateUnitySchema = CreateUnitySchema.partial()
+
+
+
+/**
+ * User
+ */
+
+export const CreateUserSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  password: z.string(),
+  profile: z.nativeEnum(Profile), 
+  unityId: z.number()
+})  
+
+export const UpdateUserSchema = CreateUserSchema.partial()
+export const FindUserSchema = CreateUserSchema.partial()
+
+
+
+
+
+
+

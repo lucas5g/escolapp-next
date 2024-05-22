@@ -1,17 +1,34 @@
-import { cache } from "@/libs/node-cache";
-import { PointRepository } from "@/repositories/PointRepository";
+import { prisma } from "@/libs/prisma";
+import { FindPointSchema } from "@/utils/schemas";
+import { FindPointType } from "@/utils/types";
+import { Prisma } from "@prisma/client";
+export class PointService {
+  async findAll(data: FindPointType) {
+    const games = await prisma.game.findMany({
+      where: FindPointSchema.parse(data)
+    })
+    
+    const gamesTeams =  games.map(game => (
+      game.teams
+    )).flat()
 
-export class PointService{
-  static async findMany(){
+    // const teamsIds = [...new Set] gamesTeams.map((gameTeam:any) => gameTeam.id
+    // const teamsIds = [...new Set(gamesTeams.)]
+    // const teamsIds = []
+    
 
-    if (cache.has('points')) {
-      return cache.get('points') as any[]
-    }
+    // console.log(gamesTeams, teamsIds)
 
-    const points = await PointRepository.findMany()
+    return '
+    '
 
-    cache.set('points', points)
-    return points
+    return await prisma.team.findMany({
+      where:{
+        id:{
+          in: teamsIds
+        }
+      }
+    })
 
   }
 }

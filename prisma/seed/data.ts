@@ -1,4 +1,4 @@
-import { Modality, Prisma, Team, Unity, User } from "@prisma/client"
+import {  Modality, Team, Unity, User } from "@prisma/client"
 import {format} from 'date-fns'
 
 export const unities: Unity[] = [
@@ -77,21 +77,21 @@ export const places = [
 export const users: User[] = [
   {
     id: 1,
-    email: 'admin@mail.com',
+    email: 'test@mail.com',
     password: 'qweqwe',
     unityId: 2,
     profile: 'manager'
   },
   {
     id: 2,
-    email: 'juiz@mail.com',
+    email: 'admin@mail.com',
     password: 'qweqwe',
     unityId: 2,
-    profile: 'judge'
+    profile: 'admin'
   },
   {
     id: 3,
-    email: 'coordenador@mail.com',
+    email: 'mediador@mail.com',
     password: 'qweqwe',
     unityId: 2,
     profile: 'coordinator'
@@ -107,6 +107,7 @@ export const games = [
     placeId: 1,
     modalityId: 1,
     userId: 2,
+    unityId: 2,
     teams: [
       {
         id: 1,
@@ -118,6 +119,30 @@ export const games = [
         id: 3,
         gols: 0,
         points: 0,
+        fairPlay: 0
+      },
+    ]
+  },
+  {
+    id:2,
+    date: format(new Date(), 'yyyy-MM-dd'),
+    startHours: "08:00",
+    endHours: "09:00",
+    placeId: 1,
+    modalityId: 1,
+    userId: 2,
+    unityId: 2,
+    teams: [
+      {
+        id: 1,
+        gols: 1,
+        points: 3,
+        fairPlay: 0
+      },
+      {
+        id: 3,
+        gols: 2,
+        points: 1,
         fairPlay: 0
       },
     ]

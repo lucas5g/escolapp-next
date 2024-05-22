@@ -1,5 +1,5 @@
 import { Genre, Prisma, PrismaClient } from '@prisma/client'
-
+import bcrypt from 'bcrypt'
 
 import { games, groups, modalities, places, setups, teams, unities, users } from './data'
 
@@ -29,26 +29,27 @@ async function main() {
       })
     }
 
-    for(const user of users){
+    for (const user of users) {
+      user.password = await bcrypt.hash(user.password, 12)
       await prisma.user.upsert({
-        where: {id: user.id},
+        where: { email: user.email },
         create: user,
         update: user
       })
     }
 
-    for(const team of teams){
+    for (const team of teams) {
 
       await prisma.team.upsert({
-        where: {id: team.id},
-        create:team,
+        where: { id: team.id },
+        create: team,
         update: team
       })
     }
 
-    for(const game of games){
+    for (const game of games) {
       await prisma.game.upsert({
-        where:{id: game.id},
+        where: { id: game.id },
         create: game,
         update: game
       })

@@ -37,51 +37,23 @@ export class TeamService {
   }
 
   async remove(id: number) {
-    // return await prisma.team.delete({
-    //   where: { id }
-    // })
 
-    const test = [
-      {
-        "id": 1,
-        "gols": 0,
-        "points": 0,
-        "fairPlay": 0
-      },
-      {
-        "id": 3,
-        "gols": 0,
-        "points": 0,
-        "fairPlay": 0
-      }
-    ]
-
-    const games = await prisma.game.findMany({
+    const gameWithTeam = await prisma.game.findFirst({
       where: {
         teams: {
-
           path: '$[*].id',
-          // equals:1
-          array_contains: 1
-          // equals:test
-          // string_contains:id.toString()
-          //  string_contains: "id"
-          //  string_contains: `"id":${id}`
+          array_contains: id
         }
       }
     })
 
-    return games
-    // const gameTeam = games.find(game => {
-    //   const teams = game.teams as Prisma.JsonArray
-    //   return teams.find((team: any) => team.id === id)
-    // })
+    if (gameWithTeam) {
+      throw new Error('Não foi possível deletar :(\nPossui jogos com essa equipe.')
+    }
 
-    // if (gameTeam) {
-    //   throw new Error('Não foi possível deletar :(\nPossui jogos com essa equipe.')
-    // }
-    return id
-
+    return await prisma.team.delete({
+      where: { id }
+    })
 
   }
 }
