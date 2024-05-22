@@ -1,0 +1,5 @@
+- Git stash 
+- lsp 
+- singoton 
+- microsoft planilha com node 
+- node to bin
