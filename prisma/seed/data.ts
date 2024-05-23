@@ -159,33 +159,33 @@ export const teams: Team[] = [
     unityId:2,
     students: ['C123123', 'C321321']
   },
-  {
-    id: 2,
-    name: 'xadrez',
-    modalityId: 2,
-    group: 'f2',
-    genre: 'misto',
-    unityId: 2,
-    students: ['C123123', 'C321321']
-  },
-  {
-    id: 3,
-    name: 'Futebol 3',
-    modalityId: 1,
-    group: 'f1',
-    genre: 'mas',
-    unityId:2,
-    students: ['C123123', 'C321321']
-  },
-  {
-    id: 4,
-    name: 'Futebol 4',
-    modalityId: 1,
-    group: 'f2',
-    genre: 'misto',
-    unityId: 2,
-    students: ['C123123', 'C321321']
-  },
+  // {
+  //   id: 2,
+  //   name: 'xadrez',
+  //   modalityId: 2,
+  //   group: 'f2',
+  //   genre: 'misto',
+  //   unityId: 2,
+  //   students: ['C123123', 'C321321']
+  // },
+  // {
+  //   id: 3,
+  //   name: 'Futebol 3',
+  //   modalityId: 1,
+  //   group: 'f1',
+  //   genre: 'mas',
+  //   unityId:2,
+  //   students: ['C123123', 'C321321']
+  // },
+  // {
+  //   id: 4,
+  //   name: 'Futebol 4',
+  //   modalityId: 1,
+  //   group: 'f2',
+  //   genre: 'misto',
+  //   unityId: 2,
+  //   students: ['C123123', 'C321321']
+  // },
 ]
 
 

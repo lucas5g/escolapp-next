@@ -1,42 +1,46 @@
+import { SetupServive } from "@/services/SetupService";
 import { describe, expect, it } from "vitest";
-import { SetupServive } from "../services/SetupService";
 
 describe('Setup', () => {
-  it('Create setup', async() => {
+  const service = new SetupServive()
+  const properties = ['id', 'documentLink', 'unityId']
+  it('create', async() => {
 
     const data = {
       documentLink: 'https://drive.google.com/drive/folders/18XwnFVAuLfwOXZ4mcwfscj_u1JqEAUIQ?usp=drive_link',
       unityId: 2
     }
 
-    const setup = await SetupServive.create(data)
-    expect(setup).contain(data)
+    const res = await service.create(data)
+    await service.remove(res.id)
+    expect(res).contain(data)
 
-    await SetupServive.delete(setup.id)
   })
 
-  it('Update setup', async() => {
+  it('find all', async() => {
+    const res = await service.findAll({unityId: 2})
+    expect(Object.keys(res[0])).toEqual(properties)
+    expect(res[0]).toMatchObject({unityId: 2})
+    
+  })
+
+  it('find one', async() => {
+    const res = await service.findOne(1)
+    expect(Object.keys(res)).toEqual(properties)
+  })
+
+  it('update', async() => {
     const data = {
       documentLink: 'https://docs.google.com/document/d/1U0uJvTwSmepAQZgiPAlbNiqYBY4RggBCV4bjtO5H9zY/edit?usp=drive_link',
       unityId: 2
     }
 
-    const setup = await SetupServive.update(1, data)
-    expect(setup).contain(data)
+    const res = await service.update(1, data)
+    expect(res).contain(data)
   })
 
-  it('List setup', async() => {
-    const setups = await SetupServive.findMany({unityId: 2})
-    setups.forEach(setup => {
-      expect(setup).toHaveProperty('unityId', 2)
-    })
-    console.log(setups)
-  })
+  
 
-  it('Show setup', async() => {
-    const setup = await SetupServive.findById(1)
-    expect(setup).toHaveProperty('unityId')
-    expect(setup).toHaveProperty('documentLink')
-  })
+
 
 })

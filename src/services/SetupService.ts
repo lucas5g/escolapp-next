@@ -1,31 +1,37 @@
-import { SetupRepository } from "@/repositories/SetupRepository"
-import { setupSchema } from "@/utils/schemas"
+import { prisma } from "@/libs/prisma"
+import { CreateSetupSchema, FindSetupSchema, UpdateSetupSchema } from "@/utils/schemas"
+import { CreateSetupType, FindSetupType, UpdateSetupType } from "@/utils/types"
 
-export class SetupServive{
+export class SetupServive {
 
-  static async findMany({unityId}: {unityId:number}){
-    return await SetupRepository.findMany({unityId})
+  create(data: CreateSetupType) {
+    return prisma.setup.create({
+      data: CreateSetupSchema.parse(data)
+    })
   }
 
-  static async findById(id:number){
-    return await SetupRepository.findById(id)
+  findAll(data: FindSetupType) {
+    return prisma.setup.findMany({
+      where: FindSetupSchema.parse(data)
+    })
   }
 
-  static async findByColumn(){
-
+  findOne(id: number) {
+    return prisma.setup.findUniqueOrThrow({
+      where: { id }
+    })
   }
 
-  static async update(id:number, data:any){
-    const setup = setupSchema.parse(data)
-    return await SetupRepository.update(id, setup)
+  update(id: number, data: UpdateSetupType) {
+    return prisma.setup.update({
+      where: { id },
+      data: UpdateSetupSchema.parse(data)
+    })
   }
 
-  static async create(data:any){
-    const setup = setupSchema.parse(data)
-    return await SetupRepository.create(setup)
-  }
-
-  static async delete(id:number){
-    return await SetupRepository.delete(id)
+  remove(id: number) {
+    return prisma.setup.delete({
+      where: { id }
+    })
   }
 }

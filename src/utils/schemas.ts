@@ -83,6 +83,8 @@ export const CreateSetupSchema = z.object({
   documentLink: z.string().url(),
   unityId: z.number()
 })
+export const UpdateSetupSchema = CreateSetupSchema.partial()
+export const FindSetupSchema = UpdateSetupSchema
 
 /**
  * Student
