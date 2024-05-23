@@ -16,8 +16,6 @@ export class PointService {
       game.teams
     )).flat()
 
-    console.log(gamesTeams)
-
     const teamsIds = [...new Map(gamesTeams.map((item: any) => [item.id, item.id])).values()];
 
     const teams = await prisma.team.findMany({
