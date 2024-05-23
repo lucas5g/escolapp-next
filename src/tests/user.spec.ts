@@ -1,8 +1,32 @@
 import { describe, expect, it } from 'vitest'
 import { UserService } from '@/services/UserService'
-import { users } from '../../prisma/seed/data'
+import { CreateUserType } from '@/utils/types'
 
 describe('User', () => {
+
+  const service = new UserService()
+
+  it.only('create', async() => {
+
+    const data:CreateUserType = {
+      email: 'test-delete@mail.com',
+      password: 'qweqwe',
+      profile: 'admin',
+      unityId: 2
+    }
+
+    const res = await service.create(data)
+    await service.remove(res.id)
+
+
+    expect(res).toMatchObject({
+      email: 'test-delete@mail.com',
+      profile: 'admin',
+      unityId: 2
+    })
+
+
+  })
 
   it('User list', async () => {
 

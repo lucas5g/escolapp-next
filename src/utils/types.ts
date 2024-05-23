@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { CreateGameSchema, CreateModalitySchema, CreatePlaceSchema, CreateSetupSchema, CreateTeamSchema, CreateUnitySchema, FindGameSchema, FindGroupSchema, FindPointSchema, FindSetupSchema, FindTeamSchema, UpdateGameSchema, UpdateModalitySchema, UpdatePlaceSchema, UpdateSetupSchema, UpdateTeamSchema, UpdateUnitySchema } from '@/utils/schemas'
+import { CreateGameSchema, CreateModalitySchema, CreatePlaceSchema, CreateSetupSchema, CreateTeamSchema, CreateUnitySchema, CreateUserSchema, FindGameSchema, FindGroupSchema, FindPointSchema, FindSetupSchema, FindTeamSchema, FindUserSchema, UpdateGameSchema, UpdateModalitySchema, UpdatePlaceSchema, UpdateSetupSchema, UpdateTeamSchema, UpdateUnitySchema, UpdateUserSchema } from '@/utils/schemas'
 export type CreatePlaceType = z.infer<typeof CreatePlaceSchema>
 export type UpdatePlaceType = z.infer<typeof UpdatePlaceSchema>
 
@@ -24,3 +24,8 @@ export type FindPointType = z.infer<typeof FindPointSchema>
 export type CreateSetupType = z.infer<typeof CreateSetupSchema>
 export type UpdateSetupType = z.infer<typeof UpdateSetupSchema>
 export type FindSetupType = z.infer<typeof FindSetupSchema>
+
+export type CreateUserType = z.infer<typeof CreateUserSchema>
+export type UpdateUserSchema = z.infer<typeof UpdateUserSchema>
+export type FindUserSchema = z.infer<typeof FindUserSchema>
+

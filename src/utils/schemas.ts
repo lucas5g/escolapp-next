@@ -128,7 +128,6 @@ export const UpdateUnitySchema = CreateUnitySchema.partial()
  */
 
 export const CreateUserSchema = z.object({
-  name: z.string(),
   email: z.string().email(),
   password: z.string(),
   profile: z.nativeEnum(Profile), 
@@ -136,7 +135,7 @@ export const CreateUserSchema = z.object({
 })  
 
 export const UpdateUserSchema = CreateUserSchema.partial()
-export const FindUserSchema = CreateUserSchema.partial()
+export const FindUserSchema = UpdateUserSchema
 
 
 
