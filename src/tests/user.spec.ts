@@ -5,10 +5,11 @@ import { CreateUserType } from '@/utils/types'
 describe('User', () => {
 
   const service = new UserService()
+  const properties = ['id', 'email', 'profile', 'unityId']
 
-  it.only('create', async() => {
+  it('create', async () => {
 
-    const data:CreateUserType = {
+    const data: CreateUserType = {
       email: 'test-delete@mail.com',
       password: 'qweqwe',
       profile: 'admin',
@@ -28,63 +29,42 @@ describe('User', () => {
 
   })
 
-  it('User list', async () => {
+  it('find all', async () => {
 
-    const users = await UserService.findMany({})
-    users.forEach(user => {
-      expect(user).not.toHaveProperty('password')
-      expect(user).toHaveProperty('unityId')
+    const res = await service.findAll({})
+    expect(Object.keys(res[0])).toEqual(properties)
 
-    })
-    expect(users.length).toBeGreaterThanOrEqual(0)
   })
 
-  it('User find by profile', async() => {
-    const users = await UserService.findMany({profile:'judge'})
-    users.forEach(user => {
-      expect(user).toContain({profile:'judge'})
-    })
+  it('find one', async () => {
+    const res = await service.findOne(1)
+    expect(Object.keys(res)).toEqual(properties)
+
   })
 
-  it('User update', async() => {
+  it('update', async () => {
     const data = {
       email: 'admin@mail.com',
-      name: `admin ${new Date().getMinutes()}`,
       password: 'qweqwe',
       unityId: 2
     }
 
-    const userUpdate = await UserService.update(1, { ...data, name: 'update', profile:'admin' })
-    expect(userUpdate).toHaveProperty('name', 'update')
+    const res = await service.update(2, data)
+
+    expect(res).toMatchObject({
+      email: 'admin@mail.com',
+      unityId: 2
+    })
   })
 
-  it('User create', async () => {
 
-    const data = {
-      email: 'test-delete@mail.com',
-      name: `admin ${new Date().getMinutes()}`,
-      password: 'qweqwe',
-      profile: 'admin',
-      unityId: 2
+  it('find by profile', async () => {
+    const res = await service.findAll({ profile: 'judge' })
+
+    for(const row of res){
+      expect(row).toMatchObject({ profile: 'judge' })
     }
 
-    /**
-     * Create
-     */
-    const user = await UserService.create({...data, profile:'admin'})
-    expect(user).toHaveProperty('email', data.email)
-
-
-    /**
-     * Show
-     */
-    const userShow = await UserService.findById(user.id)
-    expect(userShow).toHaveProperty('email', data.email)
-
-    /**
-     * Delete
-     */
-    await UserService.delete(user.id)
   })
 
 })

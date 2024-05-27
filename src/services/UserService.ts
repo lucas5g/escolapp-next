@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
-import { CreateUserType } from '@/utils/types'
-import { CreateUserSchema } from '@/utils/schemas'
+import { CreateUserType, FindUserType, UpdateUserType } from '@/utils/types'
+import { CreateUserSchema, FindUserSchema, UpdateUserSchema } from '@/utils/schemas'
 import { prisma } from '@/libs/prisma'
 export class UserService {
 
@@ -34,25 +34,34 @@ export class UserService {
 
   }
 
-  static async findMany(data: any) {
-    const where = userFilterSchema.parse(data)
-    return UserRepository.findMany(where)
+  findAll(data: FindUserType) {
+    return prisma.user.findMany({
+      where: FindUserSchema.parse(data),
+      select: this.select
+    })
   }
 
-  static async findById(id: number) {
-    return UserRepository.findById(id)
+  findOne(id: number) {
+    return prisma.user.findUniqueOrThrow({
+      where: { id },
+      select: this.select
+    })
   }
 
+  async update(id: number, user: UpdateUserType) {
 
+    const data = UpdateUserSchema.parse(user)
 
-  static async update(id: number, data: UserUpdateType) {
-
-    const user = userUpdateSchema.parse(data)
-
-    if (user.password) {
-      user.password = await bcrypt.hash(user.password, 12)
+    if (data.password) {
+      data.password = await bcrypt.hash(data.password, 12)
     }
-    return await UserRepository.update(id, user)
+
+    return prisma.user.update({
+      where:{id},
+      data,
+      select:this.select
+    })
+
   }
 
   remove(id: number) {

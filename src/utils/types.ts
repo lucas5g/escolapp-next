@@ -26,6 +26,6 @@ export type UpdateSetupType = z.infer<typeof UpdateSetupSchema>
 export type FindSetupType = z.infer<typeof FindSetupSchema>
 
 export type CreateUserType = z.infer<typeof CreateUserSchema>
-export type UpdateUserSchema = z.infer<typeof UpdateUserSchema>
-export type FindUserSchema = z.infer<typeof FindUserSchema>
+export type UpdateUserType = z.infer<typeof UpdateUserSchema>
+export type FindUserType = z.infer<typeof FindUserSchema>
 

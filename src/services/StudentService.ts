@@ -1,4 +1,4 @@
-import { StudentFilterType, studentFilterSchema } from "../utils/schemas"
+import { FindUserType } from "@/utils/types"
 
 interface StudentInterface {
   ra: string
@@ -8,7 +8,9 @@ interface StudentInterface {
 }
 export class StudentService {
 
-  static async findMany(data: StudentFilterType) {
+  async findMany(data: FindUserType) {
+
+    return 
 
     const filter = studentFilterSchema.parse(data)
     return await StudentRepository.findMany(filter)
