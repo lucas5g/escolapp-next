@@ -8,9 +8,9 @@ interface StudentInterface {
 }
 export class StudentService {
 
-  async findMany(data: FindUserType) {
+  async findAll(data: FindUserType) {
 
-    return 
+    return 'qwe'
 
     const filter = studentFilterSchema.parse(data)
     return await StudentRepository.findMany(filter)
